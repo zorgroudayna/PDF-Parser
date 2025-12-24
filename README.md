@@ -5,9 +5,12 @@ A Python-based PDF parser that extracts structured information from PDFs, includ
 
 **Features**
 
- 1.Extracts words and text spans from PDF pages.
+ 1.Extracts words and text spans from PDF pages. 
+ 
  2.Detects headers using predefined keywords (e.g., Date, Opération, Débit, Crédit).
+ 
  3.Identifies table columns and assigns words to headers.
+ 
  4.Detects anchor values (such as monetary amounts) in tables.
 
 **How it Works**
