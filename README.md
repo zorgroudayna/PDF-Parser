@@ -29,10 +29,10 @@ A Python-based PDF parser that extracts structured information from PDFs, includ
     <img width="600" height="503" alt="image" src="https://github.com/user-attachments/assets/1be5bece-1fd9-4bb7-b2ff-87590c433783"  />
 
  **Installation**
-
- Text
-
+ 
+```txt
  pip install PyMuPDF
+```
 
 
 
