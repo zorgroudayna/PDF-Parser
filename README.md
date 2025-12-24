@@ -1,4 +1,4 @@
-###PDF Table & Header Parser###
+##PDF Table & Header Parser
 ***Introduction***
 A Python-based PDF parser that extracts structured information from PDFs, including headers, table data, and anchor values. Built with PyMuPDF (fitz), it automatically detects headers, identifies table columns, and organizes words into structured outputs.
 
@@ -13,7 +13,8 @@ A Python-based PDF parser that extracts structured information from PDFs, includ
 
  1.Extract Words: All text spans are captured with position, font, size, and color.
  2.Detect Headers: Predefined keywords are matched and stored with their positions.
- <img width="500" height="498" alt="image" src="https://github.com/user-attachments/assets/5c99c557-cc43-455b-be5b-6175abf9bdc7"  />
+  
+  <img width="500" height="498" alt="image" src="https://github.com/user-attachments/assets/5c99c557-cc43-455b-be5b-6175abf9bdc7"  />
  
  3.Detect Columns: Table columns are automatically detected by analyzing word positions.
 
