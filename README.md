@@ -1,4 +1,4 @@
-# PDF Table & Header Parser
+# Fitz PDF Parser
 ***Introduction***
 
 A Python-based PDF parser that extracts structured information from PDFs, including headers, table data, and anchor values. Built with PyMuPDF (fitz), it automatically detects headers, identifies table columns, and organizes words into structured outputs.
