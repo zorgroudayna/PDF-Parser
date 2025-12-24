@@ -27,7 +27,13 @@ A Python-based PDF parser that extracts structured information from PDFs, includ
  6. Assign Headers: content in table zones are assigned to the closest header or anchor value.
 
     <img width="600" height="503" alt="image" src="https://github.com/user-attachments/assets/1be5bece-1fd9-4bb7-b2ff-87590c433783"  />
- 
+
+ **Installation**
+
+ Text
+
+ pip install PyMuPDF
+
 
 
 
