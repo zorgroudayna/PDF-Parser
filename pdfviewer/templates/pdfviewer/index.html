@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PDF Viewer - Headers & Anchors</title>
+<style>
+body { font-family: Arial, sans-serif; background: #f5f5f5; }
+.container { width: 90%; margin: 20px auto; overflow-x: auto; }
+
+/* Wrap page so scaling doesn’t break absolute positioning */
+.page-wrapper {
+    transform-origin: top left;
+    transform: scale(0.8);
+}
+
+.page {
+    position: relative;
+    margin: 20px auto;
+    background: white;
+    border: 1px solid #ddd;
+}
+
+.word {
+    position: absolute;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+/* Headers */
+.word.header { background: rgba(0, 0, 255, 0.2); }
+.word.header:hover { background: rgba(0, 0, 255, 0.5); }
+
+/* Anchors */
+.word.anchor { background: rgba(255, 165, 0, 0.2); }
+.word.anchor:hover { background: rgba(255, 165, 0, 0.5); }
+
+/* Anchor Values */
+.word.anchor_value { background: rgba(0, 255, 0, 0.2); }
+.word.anchor_value:hover { background: rgba(0, 255, 0, 0.5); }
+
+/* Table words (normal table content) */
+.word.table_cell { background: transparent; }
+.word.table_cell:hover { background: rgba(255, 0, 0, 0.3); }
+
+#tooltip {
+    position: fixed;
+    display: none;
+    background: rgba(0,0,0,0.85);
+    color: white;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    pointer-events: none;
+    z-index: 1000;
+    white-space: pre-line;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    {% for page in pages %}
+    <div class="page-wrapper">
+        <div class="page" style="width:{{ page.width }}px; height:{{ page.height }}px;">
+            {% for w in page.words %}
+            <span class="word 
+                {% if w.is_header %}header
+                {% elif w.is_anchor %}anchor
+                {% elif w.is_anchor_value %}anchor_value
+                {% elif w.is_table_word %}table_cell{% endif %}"
+                style="
+                    left:{{ w.left }}px; 
+                    top:{{ w.top }}px; 
+                    font-size:{{ w.size }}px; 
+                    font-family:{{ w.font }}; 
+                    color: rgb({{ w.r }}, {{ w.g }}, {{ w.b }});
+                "
+                data-token='{{ w.token|safe }}'
+                data-text="{{ w.text }}"
+                data-header="{{ w.header }}">
+                {{ w.text }}
+            </span>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div id="tooltip"></div>
+
+<script>
+const tooltip = document.getElementById("tooltip");
+const headerGroups = {{ header_groups|safe }};
+
+// Hover for headers
+document.querySelectorAll(".word.header").forEach(el => {
+    el.addEventListener("mousemove", e => {
+        const header = el.dataset.text;
+        const tokens = headerGroups[header] || [];
+        if (!tokens.length) return;
+        const content = tokens.map(t => 
+            `Text: ${t.text}\nX: ${t.x}, Y: ${t.y}\nW: ${t.width}, H: ${t.height}\nFont: ${t.font}, Size: ${t.size}\nColor: ${t.color}`
+        ).join("\n\n");
+        tooltip.textContent = content;
+        tooltip.style.display = "block";
+        tooltip.style.left = (e.clientX + 15) + "px";
+        tooltip.style.top = (e.clientY + 15) + "px";
+    });
+    el.addEventListener("mouseleave", () => tooltip.style.display = "none");
+});
+
+// Hover for anchors, anchor values, and table words
+document.querySelectorAll(".word.anchor, .word.anchor_value, .word.table_cell").forEach(el => {
+    el.addEventListener("mousemove", e => {
+        if (!el.dataset.token) return;
+        let t;
+        try { t = JSON.parse(el.dataset.token); } catch { return; }
+        const typeName = el.dataset.header || "Table Word";
+
+        const content = `Type: ${typeName}\nText: ${t.text}\nX: ${t.left}, Y: ${t.top}\nW: ${t.width}, H: ${t.height}\nFont: ${t.font}, Size: ${t.size}\nColor: rgb(${t.r},${t.g},${t.b})`;
+
+        tooltip.textContent = content;
+        tooltip.style.display = "block";
+        tooltip.style.left = (e.clientX + 15) + "px";
+        tooltip.style.top = (e.clientY + 15) + "px";
+    });
+    el.addEventListener("mouseleave", () => tooltip.style.display = "none");
+});
+</script>
+
+</body>
+</html>
